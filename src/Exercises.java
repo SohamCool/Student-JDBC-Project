@@ -177,10 +177,10 @@ public class Exercises {
 	
 //	10.	Display the info of the student who participated in the project where total no of the student should be exact three.
 	public static void threeStudentProject() {
-		System.out.println("Students who played the max designation in the same project.");
+		System.out.println("Project having Maximum 3 Students.");
 		try {
 			con = DBConnection.getCon();
-			pt = con.prepareStatement("select s.st_no,s.st_name,s.st_dob,s.st_doj from student as s left join studentproject as sp on s.st_no = sp.st_no group by sp.prj_no having count(sp.st_no)=3");
+			pt = con.prepareStatement("select s.st_no,s.st_name,s.st_dob,s.st_doj from student as s left join studentproject as sp on s.st_no = sp.st_no where sp.prj_no = (select sp.prj_no from studentproject as sp group by sp.prj_no having count(distinct sp.st_no)>2)");
 			rs = pt.executeQuery();
 			while(rs.next()) {
 				System.out.println("\nSno: "+rs.getString(1)+"\nSName: "+rs.getString(2)+"\nSDOB: "+rs.getString(3)+"\nSDOJ: "+rs.getString(4));
